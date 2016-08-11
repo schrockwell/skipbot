@@ -1,0 +1,67 @@
+/* This file is for your main application css. */
+
+$card-width: 40px;
+$card-height: $card-width * 1.6;
+$card-radius: 6px;
+
+.card {
+  display: block;
+  float: left;
+  font-size: 24px;
+  text-align: center;
+  line-height: $card-height;
+  border: 2px solid #ddd;
+  width: $card-width;
+  height: $card-height;
+  border-radius: $card-radius;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+
+  &.selected {
+    background-color: #06c;
+    color: #fff;
+    border-color: #039;
+  }
+}
+
+.stacked-pile {
+  display: block;
+  float: left;
+  width: $card-width;
+  margin-right: 10px;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+
+  .stacked-card {
+    display: block;
+    border: 2px solid #ddd;
+    border-radius: $card-radius $card-radius 0 0;
+    border-bottom: none;
+    text-align: center;
+  }
+
+  .stacked-card:last-child {
+    border-bottom: 2px solid #ddd;
+    border-radius: $card-radius $card-radius;
+    height: $card-height;
+    line-height: $card-height;
+    font-size: 24px;
+  }
+
+  &.selected .stacked-card:last-child {
+    background-color: #06c;
+    color: #fff;
+    border-color: #039;
+  }
+}
+
+.winner {
+  font-size: 24px;
+  color: #090;
+}

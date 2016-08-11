@@ -1,0 +1,6 @@
+<div id="match-table"></div>
+
+<script type="text/javascript">
+  window.matchId = "<%= @id %>";
+  window.playerId = "<%= @player_id %>";
+</script>

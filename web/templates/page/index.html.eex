@@ -1,0 +1,4 @@
+<div class="jumbotron">
+  <h2>Skipbot</h2>
+  <%= link "New Game", to: match_path(@conn, :new), class: "btn btn-lg btn-primary" %>
+</div>
