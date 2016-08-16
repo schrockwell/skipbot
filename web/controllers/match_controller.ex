@@ -7,9 +7,10 @@ defmodule Skipbot.MatchController do
   end
 
   def show(conn, %{"id" => id}) do
-    case Skipbot.PidLookup.get(id) do
-      nil -> conn |> put_status(:not_found) |> render(Skipbot.ErrorView, "404.html")
-      _ -> conn |> render("show.html", id: id, player_id: conn.assigns[:player_id])
+    case :pg2.get_members(id) do
+      {:error, {:no_such_group,  _}} -> conn |> put_status(:not_found) |> render(Skipbot.ErrorView, "404.html")
+      [] -> conn |> put_status(:not_found) |> render(Skipbot.ErrorView, "404.html")
+      [_ | _] -> conn |> render("show.html", id: id, player_id: conn.assigns[:player_id])
     end
   end
 end

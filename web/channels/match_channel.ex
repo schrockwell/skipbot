@@ -2,10 +2,9 @@ defmodule Skipbot.MatchChannel do
   use Skipbot.Web, :channel
 
   alias Skipbot.Match
-  alias Skipbot.PidLookup
 
   def join(topic = "match:" <> id, _params, socket) do
-    pid = PidLookup.get(id)
+    [pid | _] = :pg2.get_members(id)
 
     case pid do
       nil -> {:error, %{reason: "Match does not exist"}}
@@ -18,13 +17,13 @@ defmodule Skipbot.MatchChannel do
   end
 
   def terminate(_reason, socket) do
-    pid = PidLookup.get(socket.assigns[:match_id])
+    [pid | _] = :pg2.get_members(socket.assigns[:match_id])
     resp = Match.remove_player(pid, socket.assigns[:player_id])
     Skipbot.Endpoint.broadcast("match:" <> socket.assigns[:match_id], "game", resp)
   end
 
   def handle_in(event, params, socket) do
-    pid = PidLookup.get(socket.assigns[:match_id])
+    [pid | _] = :pg2.get_members(socket.assigns[:match_id])
     Match.extend_timeout(pid)
     handle_in(event, params, socket.assigns[:player_id], pid, socket)
   end

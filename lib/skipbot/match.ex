@@ -3,7 +3,6 @@ defmodule Skipbot.Match do
 
   alias Skipbot.Game
   alias Skipbot.Match
-  alias Skipbot.PidLookup
 
   #
   # GenServer Client API
@@ -69,7 +68,8 @@ defmodule Skipbot.Match do
 
   def init(opts) do
     game = Game.init(opts)
-    PidLookup.put(game.id, self())
+    :ok = :pg2.create(game.id)
+    :ok = :pg2.join(game.id, self())
     IO.puts("Created game " <> game.id)
     Process.send_after(self(), :activity_timeout, 300_000_000) # 5 minutes
     {:ok, game}
@@ -77,7 +77,7 @@ defmodule Skipbot.Match do
 
   def terminate(_reason, game) do
     IO.puts("Terminating " <> game.id)
-    PidLookup.delete(game.id)
+    :pg2.delete(game.id)
     # TODO: Broadcast that the game died
   end
 
